@@ -15,4 +15,4 @@ try() { "$@" || die "cannot $*"; }
 # TODO: set url to origin
 # TODO: delete the other remote
 echo "$remoteToRename"
-read -n1 -rsp "Press a key to continue..."
+pause
