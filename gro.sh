@@ -45,7 +45,10 @@ fi
 ## TAKE ACTIONS
 # Set url to origin
 $(git remote set-url origin $cmdNonOriginUrl)
+echo "Successful: set 'origin' url from '$cmdNonOriginRemote'"
 
-# TODO: delete the other remote
-echo "\"$cmdNumberOfRemotes\""
+# Delete the other remote
+$(git remote remove $cmdNonOriginRemote)
+echo "Successful: removed remote '$cmdNonOriginRemote'"
+
 pause
