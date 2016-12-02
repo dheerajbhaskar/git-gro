@@ -17,6 +17,7 @@ cmdOriginUrlLength=$(git remote get-url origin | wc -c)
 cmdNonOriginRemote=$(git remote | sed '/origin/d')
 cmdNonOriginRemoteLength=$(echo $cmdNonOriginRemote | wc -c)
 cmdNonOriginUrlLength=$(git remote get-url $cmdNonOriginRemote | wc -c)
+cmdNonOriginUrl=$(git remote get-url chimp-nedb | cut -d' ' -f2)
 
 # CONSTANTS
 ORIGIN_CHAR_LENGTH=7
@@ -41,9 +42,10 @@ if [ "$cmdNonOriginRemoteLength" -eq "$cmdNonOriginUrlLength" ]; then
     die "error: remote '$cmdNonOriginRemote' has no url"
 fi
 
-# TODO: display error messages if above checks fail
+## TAKE ACTIONS
+# Set url to origin
+$(git remote set-url origin $cmdNonOriginUrl)
 
-# TODO: set url to origin
 # TODO: delete the other remote
 echo "\"$cmdNumberOfRemotes\""
 pause
