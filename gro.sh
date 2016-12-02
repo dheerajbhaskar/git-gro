@@ -2,11 +2,13 @@
 
 # TODO: rename the file; gro = git rename origin
 
+# Utility functions
 pause() { read -n1 -rsp "Press a key to continue..."; }
 yell() { echo "$0: $*" >&2; }
 die() { yell "$*"; exit 111;  }
 try() { "$@" || die "cannot $*"; }
 
+# bash commands to execute
 cmdNumberOfRemotes=$(git remote | wc -l)
 cmdNumberOfRemotesNamedOrigin=$(git remote | grep origin | wc -l)
 
