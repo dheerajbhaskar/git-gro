@@ -8,11 +8,15 @@ yell() { echo "$0: $*" >&2; }
 die() { yell "$*"; exit 111;  }
 try() { "$@" || die "cannot $*"; }
 
-# bash commands to execute
+# COMMANDS: bash commands to execute
 cmdNumberOfRemotes=$(git remote | wc -l)
 cmdNumberOfRemotesNamedOrigin=$(git remote | grep origin | wc -l)
+cmdOriginUrlLength=$(git remote get-url origin | wc -c)
+
+# COMMANDS: non-origin remote
 cmdNonOriginRemote=$(git remote | sed '/origin/d')
-cmdOriginUrl=$(git remote get-url origin | wc -c)
+cmdNonOriginRemoteLength=$(echo $cmdNonOriginRemote | wc -c)
+cmdNonOriginUrlLength=$(git remote get-url $cmdNonOriginRemote | wc -c)
 
 # CONSTANTS
 ORIGIN_CHAR_LENGTH=7
@@ -28,11 +32,15 @@ if [ "$cmdNumberOfRemotesNamedOrigin" -ne "1" ]; then
 fi
 
 # Check that origin has no url
-if [ "$cmdOriginUrl" -ne "$ORIGIN_CHAR_LENGTH" ]; then
+if [ "$cmdOriginUrlLength" -ne "$ORIGIN_CHAR_LENGTH" ]; then
     die "error: remote 'origin' already has a url"
 fi
 
-# TODO: and that other remote has url
+# Check that other remote has url
+if [ "$cmdNonOriginRemoteLength" -eq "$cmdNonOriginUrlLength" ]; then
+    die "error: remote '$cmdNonOriginRemote' has no url"
+fi
+
 # TODO: display error messages if above checks fail
 
 # TODO: set url to origin
