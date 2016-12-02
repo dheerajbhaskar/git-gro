@@ -11,6 +11,11 @@ try() { "$@" || die "cannot $*"; }
 # bash commands to execute
 cmdNumberOfRemotes=$(git remote | wc -l)
 cmdNumberOfRemotesNamedOrigin=$(git remote | grep origin | wc -l)
+cmdNonOriginRemote=$(git remote | sed '/origin/d')
+cmdOriginUrl=$(git remote get-url origin | wc -c)
+
+# CONSTANTS
+ORIGIN_CHAR_LENGTH=7
 
 # Check there are only 2 remotes
 if [ "$cmdNumberOfRemotes" -ne "2" ]; then
@@ -22,7 +27,12 @@ if [ "$cmdNumberOfRemotesNamedOrigin" -ne "1" ]; then
     die "error: remote named 'origin' not found"
 fi
 
-# TODO: check that origin has no url and that other remote has url
+# Check that origin has no url
+if [ "$cmdOriginUrl" -ne "$ORIGIN_CHAR_LENGTH" ]; then
+    die "error: remote 'origin' already has a url"
+fi
+
+# TODO: and that other remote has url
 # TODO: display error messages if above checks fail
 
 # TODO: set url to origin
